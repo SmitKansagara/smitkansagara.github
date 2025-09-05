@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Intake Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <h1 class="app-title">
+                    <i class="fas fa-tint"></i>
+                    Water Intake Tracker
+                </h1>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-tab="tracker">
+                        <i class="fas fa-tint"></i>
+                        Tracker
+                    </button>
+                    <button class="nav-tab" data-tab="analytics">
+                        <i class="fas fa-chart-line"></i>
+                        Analytics
+                    </button>
+                    <button class="nav-tab" data-tab="achievements">
+                        <i class="fas fa-trophy"></i>
+                        Achievements
+                    </button>
+                    <button class="nav-tab" data-tab="settings">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <!-- Tracker Tab -->
+                <div id="tracker" class="tab-content active">
+                    <!-- Stats Overview -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="glasses-today">0</div>
+                                <div class="stat-label">Glasses Today</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="current-streak">0</div>
+                                <div class="stat-label">Day Streak</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="goal-progress">0%</div>
+                                <div class="stat-label">Goal Progress</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Tracker -->
+                    <div class="tracker-grid">
+                        <!-- Water Bottle Visualization -->
+                        <div class="card bottle-card">
+                            <div class="bottle-container">
+                                <div class="bottle-wrapper">
+                                    <div class="bottle">
+                                        <div class="bottle-cap"></div>
+                                        <div class="bottle-body">
+                                            <div class="water-fill" id="water-fill"></div>
+                                            <div class="bubbles" id="bubbles"></div>
+                                            <div class="measurement-lines">
+                                                <div class="measurement-line" style="bottom: 25%">
+                                                    <span class="measurement-label" id="measure-25">2</span>
+                                                </div>
+                                                <div class="measurement-line" style="bottom: 50%">
+                                                    <span class="measurement-label" id="measure-50">4</span>
+                                                </div>
+                                                <div class="measurement-line" style="bottom: 75%">
+                                                    <span class="measurement-label" id="measure-75">6</span>
+                                                </div>
+                                                <div class="measurement-line" style="bottom: 100%">
+                                                    <span class="measurement-label" id="measure-100">8</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-ring">
+                                        <svg viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="45" class="progress-ring-bg"></circle>
+                                            <circle cx="50" cy="50" r="45" class="progress-ring-fill" id="progress-ring"></circle>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="bottle-info">
+                                    <div class="glasses-count">
+                                        <span id="current-glasses">0</span> / <span id="daily-goal">8</span>
+                                    </div>
+                                    <div class="glass-size">glasses (<span id="glass-size-display">250</span>ml each)</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progress-fill"></div>
+                                    </div>
+                                    <div class="badges">
+                                        <span class="badge blue" id="progress-badge">0% Complete</span>
+                                        <span class="badge cyan" id="total-ml-badge">0ml Total</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Controls & Info -->
+                        <div class="controls-section">
+                            <!-- Quick Actions -->
+                            <div class="card controls-card">
+                                <div class="controls-header">
+                                    <h3>Quick Actions</h3>
+                                    <p>Track your water intake throughout the day</p>
+                                </div>
+                                <div class="controls">
+                                    <button class="control-btn remove-btn" id="remove-glass" disabled>
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <div class="glass-display">
+                                        <div class="glass-number" id="glass-number">0</div>
+                                        <div class="glass-label">glasses</div>
+                                    </div>
+                                    <button class="control-btn add-btn" id="add-glass">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="quick-actions">
+                                    <button class="quick-btn" id="add-half">+½ Glass</button>
+                                    <button class="quick-btn" id="add-two">+2 Glasses</button>
+                                    <button class="quick-btn reset-btn" id="reset-day">Reset Day</button>
+                                </div>
+                            </div>
+
+                            <!-- Motivation Card -->
+                            <div class="card motivation-card" id="motivation-card">
+                                <div class="motivation-content">
+                                    <div class="motivation-icon" id="motivation-icon">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="motivation-text">
+                                        <div class="motivation-message" id="motivation-message">
+                                            Ready to start your hydration journey?
+                                        </div>
+                                        <div class="motivation-sub" id="motivation-sub"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Timeline -->
+                            <div class="card timeline-card" id="timeline-card" style="display: none;">
+                                <h4>Today's Timeline</h4>
+                                <div class="timeline" id="timeline"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analytics" class="tab-content">
+                    <div class="analytics-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="avg-daily">0.0</div>
+                                <div class="stat-label">Avg Daily</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="goals-achieved">0</div>
+                                <div class="stat-label">Goals Hit</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="analytics-streak">0</div>
+                                <div class="stat-label">Current Streak</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-value" id="total-glasses">0</div>
+                                <div class="stat-label">Total Glasses</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Progress -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-calendar-week"></i>
+                            <h3>This Week</h3>
+                        </div>
+                        <div class="week-grid" id="week-grid"></div>
+                    </div>
+
+                    <!-- Monthly Calendar -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-calendar"></i>
+                            <h3>Monthly Progress</h3>
+                        </div>
+                        <div class="month-grid" id="month-grid"></div>
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color no-data"></div>
+                                <span>No data</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color started"></div>
+                                <span>Started</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color half"></div>
+                                <span>50%+</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color complete"></div>
+                                <span>Goal achieved</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Insights Cards -->
+                    <div class="insights-grid">
+                        <div class="card insights-card blue-gradient">
+                            <h4>💡 Insights</h4>
+                            <div class="insights-list" id="insights-list"></div>
+                        </div>
+                        <div class="card insights-card green-gradient">
+                            <h4>🎯 Goals</h4>
+                            <div class="goals-progress" id="goals-progress"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements Tab -->
+                <div id="achievements" class="tab-content">
+                    <div class="card achievement-summary">
+                        <div class="achievement-header">
+                            <div>
+                                <h2>Achievement Center</h2>
+                                <p>Track your hydration milestones and unlock rewards!</p>
+                            </div>
+                            <div class="achievement-count">
+                                <div class="count-number" id="unlocked-count">0</div>
+                                <div class="count-label">Unlocked</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="achievement-categories"></div>
+
+                    <div class="card" id="recent-achievements" style="display: none;">
+                        <h3>Recent Achievements</h3>
+                        <div id="recent-list"></div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settings" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-bullseye"></i>
+                            <h3>Daily Goal</h3>
+                        </div>
+                        <div class="setting-item">
+                            <label for="daily-goal-input">Glasses per day</label>
+                            <input type="number" id="daily-goal-input" min="1" max="20" value="8">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-glass-water"></i>
+                            <h3>Glass Size</h3>
+                        </div>
+                        <div class="setting-item">
+                            <label for="glass-size-input">Milliliters per glass</label>
+                            <input type="number" id="glass-size-input" min="100" max="1000" step="50" value="250">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-bell"></i>
+                            <h3>Reminders</h3>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="reminders-enabled">
+                                Enable hourly reminders
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-download"></i>
+                            <h3>Data Management</h3>
+                        </div>
+                        <div class="data-actions">
+                            <button class="btn secondary" id="export-data">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                            <button class="btn secondary" id="import-data">
+                                <i class="fas fa-upload"></i>
+                                Import Data
+                            </button>
+                            <input type="file" id="import-file" accept=".json" style="display: none;">
+                            <button class="btn danger" id="reset-all">
+                                <i class="fas fa-trash"></i>
+                                Reset All Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Celebration Modal -->
+        <div class="modal" id="celebration-modal">
+            <div class="modal-content celebration-content">
+                <div class="celebration-icon" id="celebration-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="celebration-text">
+                    <h3 id="celebration-title">🎉 GOAL ACHIEVED! 🎉</h3>
+                    <p id="celebration-message">Congratulations on reaching your milestone!</p>
+                    <div class="celebration-extra" id="celebration-extra"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
